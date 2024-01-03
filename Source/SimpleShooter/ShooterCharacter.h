@@ -39,4 +39,6 @@ private:
 
 	UPROPERTY(VisibleDefaultsOnly)
 	USkeletalMeshComponent* GunMesh;
+
+	void Shooot();
 };
