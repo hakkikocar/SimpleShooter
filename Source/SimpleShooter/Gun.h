@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Gun.generated.h"
 
+
 UCLASS()
 class SIMPLESHOOTER_API AGun : public AActor
 {
@@ -25,7 +26,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-protected:
+private:
 
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* Root;
@@ -34,6 +35,14 @@ protected:
 	USkeletalMeshComponent* Mesh;
 
 	UPROPERTY(EditAnywhere,Category="Combat")
-	class UParticleSystem* MuzzleFlash;
+	 UParticleSystem* MuzzleFlash;
 
+	UPROPERTY(EditAnywhere)
+	 UParticleSystem* ImpactEffect;
+
+	UPROPERTY(EditAnywhere)
+	float MaxRange=1000;
+	
+	
+	
 };
