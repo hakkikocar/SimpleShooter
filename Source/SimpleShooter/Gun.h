@@ -40,8 +40,11 @@ private:
 	UPROPERTY(EditAnywhere)
 	 UParticleSystem* ImpactEffect;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere,Category="Combat")
 	float MaxRange=1000;
+	
+	UPROPERTY(EditAnywhere,Category="Combat")
+	float Damage=20;
 	
 	
 	

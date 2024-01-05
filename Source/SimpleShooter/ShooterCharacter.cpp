@@ -22,7 +22,7 @@ void AShooterCharacter::BeginPlay()
 	Gun->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
 	Gun->SetOwner(this);
 
-	
+	Health=MaxHealth;
 }
 
 
@@ -45,6 +45,19 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction(TEXT("Jump"),IE_Pressed,this,&ACharacter::Jump);
 	PlayerInputComponent->BindAction(TEXT("Fire"),IE_Pressed,this,&AShooterCharacter::Shooot);
 
+}
+
+float AShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	float DamageToApply= Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	DamageToApply=FMath::Min(DamageToApply,Health);
+	Health-= DamageToApply;
+	if (Health<=0)
+	{
+		DamageCauser->Destroy();
+	}
+	UE_LOG(LogTemp,Warning,TEXT("health %f"),Health);
+	return DamageToApply;
 }
 
 void AShooterCharacter::MoveForward(float AxisValue)
