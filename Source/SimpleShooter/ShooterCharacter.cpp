@@ -52,13 +52,15 @@ float AShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 	float DamageToApply= Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	DamageToApply=FMath::Min(DamageToApply,Health);
 	Health-= DamageToApply;
-	if (Health<=0)
-	{
-		DamageCauser->Destroy();
-	}
-	UE_LOG(LogTemp,Warning,TEXT("health %f"),Health);
+	IsDeath();
 	return DamageToApply;
 }
+
+bool AShooterCharacter::IsDeath() const
+{
+	return Health<=0;
+}
+
 
 void AShooterCharacter::MoveForward(float AxisValue)
 {
