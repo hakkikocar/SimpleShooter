@@ -22,6 +22,10 @@ public:
 protected:
 
 	virtual void BeginPlay() override;
-
 	
+private:
+
+	UPROPERTY(EditAnywhere,Category="AI")
+	class UBehaviorTree* BehaviorTree;
+
 };
