@@ -3,6 +3,7 @@
 
 #include "ShooterAIController.h"
 #include "Kismet/GameplayStatics.h"
+#include "BehaviorTree/BlackboardComponent.h"
 
 
 // Beginplay Function
@@ -12,6 +13,9 @@ void AShooterAIController::BeginPlay()
 	if (BehaviorTree!=nullptr)
 	{
 		RunBehaviorTree(BehaviorTree);
+		APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(),0);
+		GetBlackboardComponent()->SetValueAsVector(TEXT("PlayerLocation"),PlayerPawn->GetActorLocation());
+		GetBlackboardComponent()->SetValueAsVector(TEXT("OwnerLocation"),GetPawn()->GetActorLocation());
 	}
 }
 
@@ -21,7 +25,7 @@ void AShooterAIController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	//APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(),0);
+	//
 	
 	//bool Sight=LineOfSightTo(PlayerPawn);
 	//UE_LOG(LogTemp,Warning,TEXT("is true %hhd"),Sight);
