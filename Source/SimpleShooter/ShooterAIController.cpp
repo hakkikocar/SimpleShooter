@@ -14,7 +14,7 @@ void AShooterAIController::BeginPlay()
 	{
 		RunBehaviorTree(BehaviorTree);
 		APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(),0);
-		GetBlackboardComponent()->SetValueAsVector(TEXT("PlayerLocation"),PlayerPawn->GetActorLocation());
+		
 		GetBlackboardComponent()->SetValueAsVector(TEXT("OwnerLocation"),GetPawn()->GetActorLocation());
 	}
 }
@@ -24,21 +24,4 @@ void AShooterAIController::BeginPlay()
 void AShooterAIController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-
-	//
-	
-	//bool Sight=LineOfSightTo(PlayerPawn);
-	//UE_LOG(LogTemp,Warning,TEXT("is true %hhd"),Sight);
-
-	//if (Sight)
-	//{
-	//	SetFocus(PlayerPawn);
-	//}
-	//else
-	//{
-	//	ClearFocus(EAIFocusPriority::Gameplay);
-	//	StopMovement();
-	//}
-
-	
 }

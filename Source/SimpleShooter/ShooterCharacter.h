@@ -33,6 +33,8 @@ public:
 	UFUNCTION(BlueprintPure)
 	bool IsDeath()const;
 
+	void Shooot();
+
 private:
 	void MoveForward(float AxisValue);
 	void MoveRight(float AxisValue);
@@ -44,8 +46,6 @@ private:
 
 	UPROPERTY(VisibleDefaultsOnly)
 	USkeletalMeshComponent* GunMesh;
-
-	void Shooot();
 
 	UPROPERTY(EditAnywhere,Category="Combat")
 	float MaxHealth=100;
