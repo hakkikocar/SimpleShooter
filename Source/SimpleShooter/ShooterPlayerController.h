@@ -4,11 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "Blueprint/UserWidget.h"
 #include "ShooterPlayerController.generated.h"
 
-/**
- * 
- */
+
+
+
 UCLASS()
 class SIMPLESHOOTER_API AShooterPlayerController : public APlayerController
 {
@@ -21,6 +22,9 @@ public:
 private:
 	UPROPERTY(EditAnywhere)
 	float RestartDelay=5.f;
+	
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UUserWidget> LoseScreenClass;
 
 	FTimerHandle RestartTimer;
 };
