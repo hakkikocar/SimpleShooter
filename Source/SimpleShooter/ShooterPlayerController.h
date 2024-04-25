@@ -8,8 +8,6 @@
 #include "ShooterPlayerController.generated.h"
 
 
-
-
 UCLASS()
 class SIMPLESHOOTER_API AShooterPlayerController : public APlayerController
 {
@@ -19,6 +17,12 @@ class SIMPLESHOOTER_API AShooterPlayerController : public APlayerController
 public:
 	virtual void GameHasEnded(AActor* EndGameFocus=nullptr, bool bIsWinner=false) override;
 
+protected:
+	virtual void BeginPlay() override;
+	
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UUserWidget> HudWidgetClass;
+	
 private:
 	UPROPERTY(EditAnywhere)
 	float RestartDelay=5.f;
@@ -26,5 +30,10 @@ private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UUserWidget> LoseScreenClass;
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UUserWidget> WinScreenClass;
+
 	FTimerHandle RestartTimer;
+	
+	UUserWidget* HudWidget;
 };

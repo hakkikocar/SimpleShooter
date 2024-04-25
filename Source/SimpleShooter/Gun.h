@@ -38,6 +38,12 @@ private:
 	 UParticleSystem* MuzzleFlash;
 
 	UPROPERTY(EditAnywhere)
+	USoundBase* MuzzleSound;
+
+	UPROPERTY(EditAnywhere)
+	USoundBase* ImpactSound;
+
+	UPROPERTY(EditAnywhere)
 	 UParticleSystem* ImpactEffect;
 
 	UPROPERTY(EditAnywhere,Category="Combat")
@@ -46,6 +52,7 @@ private:
 	UPROPERTY(EditAnywhere,Category="Combat")
 	float Damage=20;
 	
-	
+	bool GunTrace(FHitResult&Hit,FVector&ShortDirection);
+	AController*GetOwnerController()const;
 	
 };

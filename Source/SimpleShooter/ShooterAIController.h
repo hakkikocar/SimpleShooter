@@ -18,6 +18,8 @@ public:
 
 	virtual void Tick(float DeltaSeconds) override;
 
+	bool bIsDeat()const;
+
 	
 protected:
 

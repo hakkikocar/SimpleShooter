@@ -32,6 +32,8 @@ public:
 
 	UFUNCTION(BlueprintPure)
 	bool IsDeath()const;
+	UFUNCTION(BlueprintPure)
+	float GetHealthPercent()const;
 
 	void Shooot();
 

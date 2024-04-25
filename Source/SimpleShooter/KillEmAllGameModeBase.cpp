@@ -2,7 +2,9 @@
 
 
 #include "KillEmAllGameModeBase.h"
-#include "Kismet/GameplayStatics.h"
+#include "EngineUtils.h"
+#include "GameFramework/Controller.h"
+#include "ShooterAIController.h"
 
 void AKillEmAllGameModeBase::PawnKilled(APawn* PawnKilled)
 {
@@ -12,6 +14,23 @@ void AKillEmAllGameModeBase::PawnKilled(APawn* PawnKilled)
 
 	if (PlayerController != nullptr)
 	{
-		PlayerController->GameHasEnded(nullptr,false);
+		EndGame(false);
+	}
+	for (AShooterAIController*Controller:TActorRange<AShooterAIController>(GetWorld()))
+	{
+		if (!Controller->bIsDeat())
+		{
+			return;
+		}
+	}
+	EndGame(true);
+}
+
+void AKillEmAllGameModeBase::EndGame(bool bIsPlayerWinner)
+{
+	for (AController* Controller:TActorRange<AController>(GetWorld()))
+	{
+		bool bIsWinner = Controller->IsPlayerController()==bIsPlayerWinner;
+		Controller->GameHasEnded(Controller->GetPawn(),bIsWinner);
 	}
 }

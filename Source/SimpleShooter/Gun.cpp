@@ -21,6 +21,30 @@ AGun::AGun()
 
 }
 
+void AGun::PullTrigger()
+{
+	UGameplayStatics::SpawnEmitterAttached(MuzzleFlash,Mesh,TEXT("MuzzleFlashSocket"));
+	UGameplayStatics::SpawnSoundAttached(MuzzleSound,Mesh,TEXT("MuzzleFlashSocket"));
+	
+	FHitResult Hit;
+	FVector ShortDirection;
+	bool bSucces=GunTrace(Hit,ShortDirection);
+	if (bSucces)
+	{
+		
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(),ImpactEffect,Hit.Location,ShortDirection.Rotation(),true);
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(),ImpactSound,Hit.Location,1,1,0);
+		AActor* HitActor= Hit.GetActor();
+		if (HitActor)
+		{
+			FPointDamageEvent PointDamageEvent(Damage,Hit,ShortDirection,nullptr);
+			AController* OwnerController=GetOwnerController();
+			HitActor->TakeDamage(Damage,PointDamageEvent,OwnerController,this);
+		}
+	}
+}
+
+
 // Called when the game starts or when spawned
 void AGun::BeginPlay()
 {
@@ -33,38 +57,31 @@ void AGun::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void AGun::PullTrigger()
+bool AGun::GunTrace(FHitResult& Hit, FVector& ShortDirection)
 {
-	UGameplayStatics::SpawnEmitterAttached(MuzzleFlash,Mesh,TEXT("MuzzleFlashSocket"));
-
-	APawn* OwnerPawn=Cast<APawn>(GetOwner());
-	if (OwnerPawn==nullptr)return;
-	AController* OwnerController=OwnerPawn->GetController();
-	if (OwnerController==nullptr)return;
-
+	AController* OwnerController=GetOwnerController();
+	if (OwnerController==nullptr)return false;
+	
 	FVector Location;
 	FRotator Rotation;
 	OwnerController->GetPlayerViewPoint(Location,Rotation);
+	ShortDirection = -Rotation.Vector();
 	
 	FVector End= Location+ Rotation.Vector()*MaxRange;
-	FHitResult HitResult;
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(this);
 	Params.AddIgnoredActor(GetOwner());
-	bool bSucces=GetWorld()->LineTraceSingleByChannel(HitResult,Location,End,ECC_GameTraceChannel1,Params);
+	return GetWorld()->LineTraceSingleByChannel(Hit,Location,End,ECC_GameTraceChannel1,Params);
+}
 
-	if (bSucces)
-	{
-		FVector ShotDirection = -Rotation.Vector();
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(),ImpactEffect,HitResult.Location,ShotDirection.Rotation(),true);
-		FPointDamageEvent PointDamageEvent(Damage,HitResult,ShotDirection,nullptr);
+AController* AGun::GetOwnerController() const
+{
+	APawn* OwnerPawn=Cast<APawn>(GetOwner());
+	if (OwnerPawn==nullptr)return nullptr;
+	return OwnerPawn->GetController();
+}
 
-		AActor* HitActor= HitResult.GetActor();
-		if (HitActor)
-		{
-			HitActor->TakeDamage(Damage,PointDamageEvent,OwnerController,this);
-		}
-	}
+
+
 
 	
-}
